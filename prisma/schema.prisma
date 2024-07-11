@@ -1,0 +1,147 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum VisaStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAYMENT_PENDING
+}
+
+enum TypingStatus {
+  CANCEL
+  WAITING
+  SEND
+}
+
+enum AutomationStatus {
+  PENDING
+  APPLIED
+  REJECTED
+}
+
+model User {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  email               String   @unique
+  password            String
+  officeName          String
+  officeAddress       String
+  officeGoogleMapLink String
+  phoneNo             String
+  landlineNo          String?
+  accountsEmail       String
+  accountsPhone       String
+  passportFront       String
+  passportBack        String
+  tradeLicense        String
+  emiratesId          String
+  role                UserRole @default(USER)
+  walletId            String?  @db.ObjectId
+}
+
+model Airline {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String // Required field to store the Name of the airline
+  logoUrl      String // Required field to store the URL of the uploaded logo
+  country      String? // Optional field for country
+  headquarters String? // Optional field for headquarters
+  website      String? // Optional field for website
+  createdAt    DateTime @default(now()) // Timestamp of creation
+  updatedAt    DateTime @updatedAt // Timestamp of the last update
+}
+
+model Ticket {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  airline          String // Airline ID or name
+  flightNo         String
+  totalSeatsCount  Int      @default(0)
+  availableSeats   Int?     @default(0)
+  heldSeats        Int      @default(0)  // New field to track held seats
+  flightDeparture  DateTime
+  flightArrival    DateTime
+  departureAirport String
+  arrivalAirport   String
+  checkInBaggage   Int
+  cabinBaggage     Int
+  class            String
+  adultPrice_A     Int
+  childPrice_A     Int
+  infantPrice_A    Int
+  adultPrice_B     Int
+  childPrice_B     Int
+  infantPrice_B    Int
+  createdAt        DateTime @default(now()) // Timestamp of creation
+  updatedAt        DateTime @updatedAt // Timestamp of the last update
+  Hold             Hold[]
+}
+
+model Hold {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  ticketId      String   @db.ObjectId
+  ticket        Ticket   @relation(fields: [ticketId], references: [id])
+  userId        String   @db.ObjectId
+  expiresAt     DateTime
+  extendedCount Int      @default(0) // Track how many times the hold has been extended
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model VisaApplication {
+  id                 String           @id @default(auto()) @map("_id") @db.ObjectId
+  doc4               String?
+  doc2               String?
+  doc1               String?
+  doc3               String?
+  arrivalDate        DateTime?
+  UID                String?
+  visaDuration       String
+  visaType           String
+  nationality        String?
+  passportNumber     String
+  gender             String?
+  dateOfBirth        DateTime?
+  birthCountry       String?
+  maritalStatus      String?
+  dateOfIssue        DateTime?
+  expirationDate     DateTime?
+  comingFrom         String?
+  birthPlace         String?
+  firstName          String?
+  middleName         String?
+  lastName           String?
+  passportIssuePlace String?
+  fatherName         String?
+  motherName         String?
+  husbandName        String?
+  visitReason        String?
+  profession         String?
+  education          String?
+  groupMembership    String
+  visitingCountry    String
+  totalMembers       String?
+  religion           String?
+  amount             Float
+  passportFront      String
+  passportBack       String
+  parentVisa         String?
+  status             VisaStatus
+  photo              String
+  appliedBy          String
+  mettId             String?
+  visa               String?
+  insurance          String?
+  typingStatus       TypingStatus
+  automationStatus   AutomationStatus
+  vsCode             String?
+}
