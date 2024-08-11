@@ -73,7 +73,6 @@ const SignUp = () => {
 
     let passportFrontUrl, passportBackUrl, tradeLicenseUrl, emiratesIdUrl
     try {
-
      passportFrontUrl = await getSignedURL(passportFront.type, passportFront.size, await computeSHA256(passportFront))
      passportBackUrl = await getSignedURL(passportBack.type, passportBack.size, await computeSHA256(passportBack))
      tradeLicenseUrl = await getSignedURL(tradeLicense.type, tradeLicense.size, await computeSHA256(tradeLicense))

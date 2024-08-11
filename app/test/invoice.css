@@ -1,0 +1,71 @@
+
+/* App.css */
+.invoice {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    border-radius: 5px;
+    padding: 2rem;
+    width: 210mm;
+    height: 297mm;  
+    font-family: "Poppins", sans-serif;
+  
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .invoice-header {
+    background-color: #415472;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+  }
+  
+  .company-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .company-address {
+    flex: 1;
+  }
+  
+  .info {
+    font-size: 10px;
+  }
+  .invoice-details {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .billing-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 0 auto;
+    font-size: 13px;
+    line-height: 1.7;
+  
+  }
+  
+  .billing-details div {
+    flex: 1;
+  }
+  
+  .billing-details p {
+    line-height: 1.6;
+  }
+  
+  .billing-details strong {
+    font-weight: bold;
+  }
+  
+  .info {
+    margin-top: auto;
+    font-size: 12px;
+    line-height: 1.6;
+  }

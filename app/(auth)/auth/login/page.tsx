@@ -1,133 +1,155 @@
 "use client"
-import { FormEvent, useState } from "react"
+import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
-import { Input } from "@/components/ui/input"
 import { loginUser } from "@/actions/login"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+
+const formSchema = z.object({
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+})
 
 const Login = () => {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
-    const handleSubmit = async(event: FormEvent<HTMLFormElement>) =>{
-        event.preventDefault()
-        setLoading(true)
-        try {
-            const formData = new FormData(event.currentTarget)            
-            let response = await loginUser(formData)
 
-            if(response?.error === "Invalid email or password"){ 
-                return toast({
-                  title: 'Login failed',
-                  description: "Invalid email or password",
-                  variant: "destructive",
-                })
-              }
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
 
-            if(response?.error === "Something went wrong"){ 
-                return toast({
-                  title: 'Login failed',
-                  description: "Something went wrong",
-                  variant: "destructive",
-                })
-              }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true)
+    try {
+      const formData = new FormData()
+      formData.append("email", values.email)
+      formData.append("password", values.password)
+      
+      let response = await loginUser(formData)
 
+      if(response?.error === "Invalid email or password"){ 
+        return toast({
+          title: 'Login failed',
+          description: "Invalid email or password",
+          variant: "destructive",
+        })
+      }
 
-              toast({
-                title: 'Login successful',
-                description: "You have successfully logged in",
-                variant: "default",
-              })
+      if(response?.error === "Something went wrong"){ 
+        return toast({
+          title: 'Login failed',
+          description: "Something went wrong",
+          variant: "destructive",
+        })
+      }
 
-              setLoading(false)
-        } catch (error: any) {
-          toast({
-            title: 'Login failed',
-            description: error?.response?.data.message,
-            variant: "destructive",
-          })
-            console.log(error?.response?.data.message);
-          }
-          setLoading(false)
+      toast({
+        title: 'Login successful',
+        description: "You have successfully logged in",
+        variant: "default",
+      })
+
+    } catch (error: any) {
+      toast({
+        title: 'Login failed',
+        description: error?.response?.data.message,
+        variant: "destructive",
+      })
+      console.log(error?.response?.data.message);
+    } finally {
+      setLoading(false)
     }
+  }
 
-    
-    return(
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 text-left mt-24 bg-white">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background">
+      <div className="mx-auto w-full max-w-md space-y-8">
+        <div className="flex flex-col items-center justify-center">
           <img
-            className="mx-auto h-16 w-auto"
+            className="h-16 w-auto"
             src={'https://www.mondial.ae/img/logo232.png'}
             alt="Your Company"
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
         </div>
-
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm  leading-6 text-gray-900 font-semibold">
-                Email address
-              </label>
-              <div className="mt-2">
-                <Input
-                  id="email"
+        <Card>
+          <CardTitle className="text-center mt-5">Sign in to your account</CardTitle>
+          <CardContent className="space-y-6 pt-6">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
                   name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md pl-4 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#a3915a] sm:text-sm sm:leading-6"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="m@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm leading-6 text-gray-900 font-semibold">
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a href="/forgot-password" className="font-semibold text-[#a3915a] hover:text-[#A39150]">
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-2">
-                <Input
-                  id="password"
+                <FormField
+                  control={form.control}
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md pl-4 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#a3915a] sm:text-sm sm:leading-6"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Password</FormLabel>
+                        <Link href="/forgot-password" className="text-sm font-medium text-primary hover:underline">
+                          Forgot password?
+                        </Link>
+                      </div>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-[#a3915a] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#A39150] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3915a]"
-              >
-                Sign in
-                {loading&&<Loader2 className="ml-2 h-4 w-4 animate-spin my-auto" />}
-              </button>
-            </div>
-          </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            don&apos;t have an account?{' '}
-            <Link href="/auth/register" className="font-semibold leading-6 text-[#a3915a] hover:text-[#A39150]">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={loading}
+                >
+                  Sign in
+                  {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter className="text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{' '}
+            <Link href="/auth/register" className="font-medium text-primary hover:underline">
               Create an account
             </Link>
-          </p>
-        </div>
+          </CardFooter>
+        </Card>
       </div>
-
-    )
+    </div>
+  )
 }
 
 export default Login

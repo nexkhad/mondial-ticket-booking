@@ -17,7 +17,7 @@ const ProtectedLayout = async ({children}: ProtectedLayoutProps) => {
     }
 
     return(
-        <div className="w-full h-full flex flex-col gap-y-10 items-center justify-center">
+        <div className="w-full h-[100dvh] flex flex-col gap-y-10 items-center justify-center ">
             <Header />
             {children}
         </div>

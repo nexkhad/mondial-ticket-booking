@@ -19,7 +19,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
  
-const frameworks = [
+export const frameworks = [
   {
     value: "dubai",
     label: "DBX, Dubai",
@@ -39,9 +39,9 @@ type Airport = {
   value: string
   label: string
 }
-export default function AirportsSelector({children, setData}: {children: React.ReactNode, setData: React.Dispatch<React.SetStateAction<Airport>>}) {
+export default function AirportsSelector({children, setData, airport}: {children: React.ReactNode,airport: string, setData: React.Dispatch<React.SetStateAction<Airport>>}) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState(airport)
  
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -56,6 +56,7 @@ export default function AirportsSelector({children, setData}: {children: React.R
             <CommandGroup>
               {frameworks.map((framework) => (
                 <CommandItem
+                defaultChecked={value === framework.value}
                   key={framework.value}
                   value={framework.value}
                   onSelect={(currentValue) => {

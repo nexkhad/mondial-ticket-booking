@@ -113,13 +113,7 @@ const FlightData = ({ flight }: { flight: Ticket }) => {
               </h4>
 
               <ListPricing ticket={flight}>
-                <Button
-                  className="border-2 border-red-700 px-3 py-4"
-                  variant={"outline"}
-                >
-                  {" "}
                   <span className="text-red-700 font-semibold">View Fares</span>
-                </Button>
               </ListPricing>
             </div>
           </div>

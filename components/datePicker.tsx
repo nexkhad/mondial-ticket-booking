@@ -17,10 +17,10 @@ export function DatePicker({children, setDate}: {children: React.ReactNode, setD
  
     const [open, setOpen] = React.useState(false)
     const selectDate = (date: Date) => {
-        if(date !== new Date()){
+      console.log(date);
+      
         setDate(date)
         setOpen(false)
-        }
     }
   return (
     <Popover open={open}>

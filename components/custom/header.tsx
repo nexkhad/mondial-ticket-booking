@@ -113,12 +113,14 @@ export default function Component() {
             </MenubarMenu>
             <MenubarMenu>
               <MenubarTrigger>
-                Profiles
+                Wallet
                 <ArrowDownIcon />
               </MenubarTrigger>
               <MenubarContent>
                 <MenubarRadioGroup value="benoit">
-                  <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
+                  <MenubarRadioItem value="andy">
+                    <Link href={"/wallet/deposite"}>Deposite</Link>
+                  </MenubarRadioItem>
                   <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
                   <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
                 </MenubarRadioGroup>

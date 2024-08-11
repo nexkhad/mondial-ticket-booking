@@ -3,6 +3,7 @@
  * @type {string[]}
  */
 export const publicRoutes: string[] = [
+    '/test',
     "/auth/login",
     "/auth/register",
 ]

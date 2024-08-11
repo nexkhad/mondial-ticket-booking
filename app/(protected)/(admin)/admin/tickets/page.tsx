@@ -165,7 +165,7 @@ const prisma = new PrismaClient();
           <TableRow key={index}>
             <TableCell>{ticket.airline}</TableCell>
             <TableCell>{ticket.flightNo}</TableCell>
-            <TableCell>{ticket.seatsCount}</TableCell>
+            <TableCell>{ticket.totalSeatsCount}</TableCell>
             <TableCell>{ticket.flightDeparture.toLocaleString()}</TableCell>
             <TableCell>{ticket.flightArrival.toLocaleString()}</TableCell>
             <TableCell>{ticket.departureAirport}</TableCell>

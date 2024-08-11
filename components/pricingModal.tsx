@@ -95,7 +95,7 @@ export const ListPricing = ({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger className="border-2 border-red-700 p-1 rounded font-normal cursor-pointer hover:border-secondary hover:text-secondary text-sm">{children}</DialogTrigger> 
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Book a seat</DialogTitle>
