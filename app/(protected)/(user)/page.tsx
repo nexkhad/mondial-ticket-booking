@@ -10,6 +10,8 @@ import { SectionNav } from "@/components/sectionNav";
 import PopularDestinations from "@/components/popularDestinations";
 import SpecialOffers from "@/components/SpecialOffers";
 import Newsletter from "@/components/Newsletter";
+
+
 export default async function Home() {
 
   return (

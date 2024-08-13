@@ -15,6 +15,15 @@ import {
 
 import { Button } from "@/components/ui/button";
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
+  
+import {
   Card,
   CardContent,
   CardDescription,
@@ -43,14 +52,26 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PrismaClient } from "@prisma/client";
 
-export default async function Users() {
+const statusOptions = ["pending", "approved", "rejected"];
+
+export default async function DepositRequest() {
   const prisma = new PrismaClient();
 
-  const users = await prisma.user.findMany({});
+  const depositRequests = await prisma.depositRequest.findMany({
+    include: {
+        user: true, //This includes the related User data
+    }
+  });
   await prisma.$disconnect();
 
+//   const [status, setStatus] = useState(depRequest.status);
+
+//   const handleStatusChange = (e) => {
+//     setStatus(e.target.value);
+//   };
+
   return (
-    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 sm:gap-8">
       <Tabs defaultValue="all">
         <div className="flex items-center">
           <TabsList>
@@ -58,7 +79,7 @@ export default async function Users() {
             <TabsTrigger value="active">Active</TabsTrigger>
             <TabsTrigger value="draft">Inactive</TabsTrigger>
           </TabsList>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="h-7 gap-1">
@@ -108,23 +129,79 @@ export default async function Users() {
       <TableHeader>
         <TableRow>
           <TableHead>Office Name</TableHead>
-          <TableHead>Office Address</TableHead>
-          <TableHead>Accounts Phone</TableHead>
-          <TableHead>Accounts Email</TableHead>
+          <TableHead>Depositor Name</TableHead>
+          <TableHead>Bank Account</TableHead>
+          <TableHead>Bank Reference</TableHead>
+          <TableHead>Amount</TableHead>
+          <TableHead>Status</TableHead>
           <TableHead className="text-center">
             <span className="">Actions</span>
           </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.officeName}</TableCell>
-            <TableCell>{user.officeAddress}</TableCell>
-            <TableCell>{user.accountsPhone}</TableCell>
-            <TableCell>{user.accountsEmail}</TableCell>
-            <TableCell className="flex justify-items-start">
-              <ExpandIcon className="h-4 w-4 opacity-50 mx-auto hover:scale-150 cursor-pointer"/>
+        {depositRequests.map((depRequest) => (
+          <TableRow key={depRequest.id}>
+            <TableCell>{depRequest.user.officeName}</TableCell> {/* Accessing related User data */}
+            <TableCell>{depRequest.depositorName}</TableCell>
+            <TableCell>{depRequest.bankAccount}</TableCell>
+            <TableCell>{depRequest.bankRef}</TableCell>
+            <TableCell>{depRequest.amount}</TableCell>
+            <TableCell>{depRequest.status}</TableCell>
+            <TableCell className="text-center">
+            <Dialog>
+      <DialogTrigger>
+        <ExpandIcon className="h-4 w-4 opacity-50 mx-auto hover:scale-150 cursor-pointer" />
+      </DialogTrigger>
+      <DialogContent className="p-5 bg-white rounded-lg shadow-lg max-w-1gl mx-auto border border-gray-300">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-semibold text-center border-b-2 border-gray-300 pb-2">Payment Request Details</DialogTitle>
+          {/* <DialogDescription className="text-gray-300 text-center mt-2"> */}
+            {/* Additional description or instructions */}
+          {/* </DialogDescription> */}
+        </DialogHeader>
+        <div className="space-y-4 mt-3">
+          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Office Name:</strong> {depRequest.user.officeName}</p>
+          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Depositor Name:</strong> {depRequest.depositorName}</p>
+          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Account:</strong> {depRequest.bankAccount}</p>
+          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Reference:</strong> {depRequest.bankRef}</p>
+          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Amount:</strong> {depRequest.amount}</p>
+          <p className="text-md"><strong>Status:</strong> &nbsp;
+          <select
+            // value={status}
+            // onChange={handleStatusChange}
+            className="p-1 border border-gray-300 rounded-sm"
+          >
+            {statusOptions.map(option => (
+              <option key={option} value={option}>
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </option>
+            ))}
+          </select></p>
+
+          <div className=" mt-5 flex ">
+            <strong>Receipt:</strong>
+            <div className="p-3">
+              <Image
+                src={depRequest.receiptImage}
+                alt="Receipt"
+                width={500}
+                height={300}
+                className="rounded-sm shadow-sm"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mt-2 flex justify-end gap-4">
+          <Button  variant="outline" className="bg-red-500 text-white">
+            Delete
+          </Button>
+          <Button variant="primary">
+            Save
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
             </TableCell>
           </TableRow>
         ))}

@@ -119,10 +119,16 @@ export default function Component() {
               <MenubarContent>
                 <MenubarRadioGroup value="benoit">
                   <MenubarRadioItem value="andy">
+                    <Link href={"/wallet"}>Wallet</Link>
+                  </MenubarRadioItem>
+                  <MenubarRadioItem value="andy">
                     <Link href={"/wallet/deposite"}>Deposite</Link>
                   </MenubarRadioItem>
-                  <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
-                  <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
+                  <MenubarRadioItem value="andy">
+                    <Link href={"/wallet/history"}>History</Link>
+                  </MenubarRadioItem>
+                  {/* <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
+                  <MenubarRadioItem value="Luis">Luis</MenubarRadioItem> */}
                 </MenubarRadioGroup>
                 <MenubarSeparator />
                 <MenubarItem inset>Edit...</MenubarItem>

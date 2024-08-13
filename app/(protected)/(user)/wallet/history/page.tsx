@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExpandIcon, File, FileIcon, ImageIcon, ListFilter, Mail, MoreHorizontal, Phone, PlusCircle } from "lucide-react";
+import { File, FileIcon, ImageIcon, ListFilter, Mail, MoreHorizontal, Phone, PlusCircle } from "lucide-react";
 
 
 import {
@@ -41,13 +41,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PrismaClient } from "@prisma/client";
 
-export default async function Users() {
-  const prisma = new PrismaClient();
+export default function WalletHistory() {
 
-  const users = await prisma.user.findMany({});
-  await prisma.$disconnect();
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -98,36 +94,34 @@ export default async function Users() {
         <TabsContent value="all" className="overflow-x-auto w-[calc(100vw-2rem)] lg:w-full">
           <Card x-chunk="dashboard-06-chunk-0" className="overflow-auto">
             <CardHeader>
-              <CardTitle>Request</CardTitle>
+              <CardTitle>Wallet History</CardTitle>
               <CardDescription>
-                List of all Request for money deposite.
+                Review all wallet transactions
               </CardDescription>
             </CardHeader>
             <CardContent className="overflow-x-auto">
             <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Office Name</TableHead>
-          <TableHead>Office Address</TableHead>
-          <TableHead>Accounts Phone</TableHead>
-          <TableHead>Accounts Email</TableHead>
-          <TableHead className="text-center">
-            <span className="">Actions</span>
-          </TableHead>
+          <TableHead>bankAccount</TableHead>
+          <TableHead>depositorName</TableHead>
+          <TableHead>bankRef</TableHead>
+          <TableHead>status</TableHead>
+          <TableHead>createdAt</TableHead>
+          <TableHead>updatedAt</TableHead>
+   
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.officeName}</TableCell>
-            <TableCell>{user.officeAddress}</TableCell>
-            <TableCell>{user.accountsPhone}</TableCell>
-            <TableCell>{user.accountsEmail}</TableCell>
-            <TableCell className="flex justify-items-start">
-              <ExpandIcon className="h-4 w-4 opacity-50 mx-auto hover:scale-150 cursor-pointer"/>
-            </TableCell>
+          <TableRow>
+            <TableCell>Dummy data</TableCell>
+            <TableCell>Dummy data</TableCell>
+            <TableCell>Dummy data</TableCell>
+            <TableCell>Dummy data</TableCell>
+            <TableCell>Dummy data</TableCell>
+            <TableCell>Dummy data</TableCell>
           </TableRow>
-        ))}
+        
       </TableBody>
     </Table>
             </CardContent>
