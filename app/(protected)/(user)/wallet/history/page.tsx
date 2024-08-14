@@ -50,6 +50,7 @@ export default function WalletHistory() {
       <Tabs defaultValue="all">
         <div className="flex items-center mt-24">
           <TabsList>
+            
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="active">Active</TabsTrigger>
             <TabsTrigger value="draft">Inactive</TabsTrigger>

@@ -49,10 +49,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PrismaClient } from "@prisma/client";
 
-const statusOptions = ["pending", "approved", "rejected"];
+const statusOptions = ["pending", "approved", "rejected", "send back"];
 
 export default async function DepositRequest() {
   const prisma = new PrismaClient();
@@ -128,6 +141,7 @@ export default async function DepositRequest() {
             <Table>
       <TableHeader>
         <TableRow>
+          
           <TableHead>Office Name</TableHead>
           <TableHead>Depositor Name</TableHead>
           <TableHead>Bank Account</TableHead>
@@ -149,57 +163,77 @@ export default async function DepositRequest() {
             <TableCell>{depRequest.amount}</TableCell>
             <TableCell>{depRequest.status}</TableCell>
             <TableCell className="text-center">
-            <Dialog>
-      <DialogTrigger>
-        <ExpandIcon className="h-4 w-4 opacity-50 mx-auto hover:scale-150 cursor-pointer" />
-      </DialogTrigger>
-      <DialogContent className="p-5 bg-white rounded-lg shadow-lg max-w-1gl mx-auto border border-gray-300">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-center border-b-2 border-gray-300 pb-2">Payment Request Details</DialogTitle>
-          {/* <DialogDescription className="text-gray-300 text-center mt-2"> */}
-            {/* Additional description or instructions */}
-          {/* </DialogDescription> */}
-        </DialogHeader>
-        <div className="space-y-4 mt-3">
-          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Office Name:</strong> {depRequest.user.officeName}</p>
-          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Depositor Name:</strong> {depRequest.depositorName}</p>
-          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Account:</strong> {depRequest.bankAccount}</p>
-          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Reference:</strong> {depRequest.bankRef}</p>
-          <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Amount:</strong> {depRequest.amount}</p>
-          <p className="text-md"><strong>Status:</strong> &nbsp;
-          <select
-            // value={status}
-            // onChange={handleStatusChange}
-            className="p-1 border border-gray-300 rounded-sm"
-          >
-            {statusOptions.map(option => (
-              <option key={option} value={option}>
+              <Dialog>
+              <DialogTrigger>
+                <ExpandIcon className="h-4 w-4 opacity-50 mx-auto hover:scale-150 cursor-pointer" />
+              </DialogTrigger>
+              <DialogContent className="p-5 border border-gray-300">
+              <DialogHeader>
+              <DialogTitle className="text-2xl font-bold text-center border-b-2 border-gray-300 pb-1">Payment Request Details</DialogTitle>
+                {/* <DialogDescription className="text-gray-300 text-center mt-2"> */}
+                  {/* Additional description or instructions */}
+                {/* </DialogDescription> */}
+              </DialogHeader>
+              <div className="space-y-4 mt-3">
+              <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Office Name:</strong> {depRequest.user.officeName}</p>
+              <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Depositor Name:</strong> {depRequest.depositorName}</p>
+              <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Account:</strong> {depRequest.bankAccount}</p>
+              <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Reference:</strong> {depRequest.bankRef}</p>
+              <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Amount:</strong> {depRequest.amount}</p>
+              <p className="text-md"><strong>Status:</strong> &nbsp;
+              <select
+                // value={status}
+                // onChange={handleStatusChange}
+                className="p-1 border border-gray-300 rounded-sm"
+                >
+                {statusOptions.map(option => (
+                <option key={option} value={option}>
                 {option.charAt(0).toUpperCase() + option.slice(1)}
-              </option>
-            ))}
-          </select></p>
+                </option>
+                ))}
+              </select></p>
 
-          <div className=" mt-5 flex ">
-            <strong>Receipt:</strong>
-            <div className="p-3">
-              <Image
-                src={depRequest.receiptImage}
-                alt="Receipt"
-                width={500}
-                height={300}
-                className="rounded-sm shadow-sm"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mt-2 flex justify-end gap-4">
-          <Button  variant="outline" className="bg-red-500 text-white">
+              <div className=" mt-5 flex ">
+                <strong>Receipt:</strong>
+                <div className="p-3">
+                  <Image
+                  src={depRequest.receiptImage}
+                  alt="Receipt"
+                  width={500}
+                  height={300}
+                  className="rounded-sm shadow-sm"
+                  />
+                </div>
+              </div>
+              </div>
+
+
+        <AlertDialog>
+      <AlertDialogTrigger>
+  <div className="mt-2 flex justify-end gap-4">
+          <Button  variant="destructive">
             Delete
           </Button>
-          <Button variant="primary">
+          <Button variant="default">
             Save
           </Button>
         </div>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are You Sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This will permanently delete your account
+        and remove your data from our servers.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+
       </DialogContent>
     </Dialog>
             </TableCell>
