@@ -48,13 +48,13 @@ export default function WalletHistory() {
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <Tabs defaultValue="all">
-        <div className="flex items-center">
+        <div className="flex items-center mt-24">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="active">Active</TabsTrigger>
             <TabsTrigger value="draft">Inactive</TabsTrigger>
           </TabsList>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2 ">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="h-7 gap-1">
@@ -80,15 +80,7 @@ export default function WalletHistory() {
                 Export
               </span>
             </Button>
-            <Link
-              href="/admin/users/create"
-              className="h-7 gap-1 flex bg-primary text-primary-foreground items-center px-2 py-1 rounded-sm"
-            >
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Users
-              </span>
-            </Link>
+
           </div>
         </div>
         <TabsContent value="all" className="overflow-x-auto w-[calc(100vw-2rem)] lg:w-full">
