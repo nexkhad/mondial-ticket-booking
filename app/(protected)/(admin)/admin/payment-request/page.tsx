@@ -1,3 +1,4 @@
+// 'use client'
 import Image from "next/image";
 import Link from "next/link";
 import { ExpandIcon, File, FileIcon, ImageIcon, ListFilter, Mail, MoreHorizontal, Phone, PlusCircle } from "lucide-react";
@@ -62,10 +63,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
+import HandleStatusChangeButton from "../../_components/HandleStatusChangeButton";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PrismaClient } from "@prisma/client";
+// import { error } from "console";
 
-const statusOptions = ["pending", "approved", "rejected", "send back"];
 
 export default async function DepositRequest() {
   const prisma = new PrismaClient();
@@ -76,6 +79,24 @@ export default async function DepositRequest() {
     }
   });
   await prisma.$disconnect();
+
+  // async function handleStatusChange(id, newStatus) {
+  //   const response = await fetch('/api/updateStatus', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ id, newStatus }),
+  //   });
+
+  //   const result = await response.json();
+  //   if (response.ok) {
+  //     console.log('Update Successfull', result);      
+  //   } else {
+  //     console.error('Update Failed', error);
+      
+  //   }
+  // }
 
 //   const [status, setStatus] = useState(depRequest.status);
 
@@ -180,18 +201,19 @@ export default async function DepositRequest() {
               <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Account:</strong> {depRequest.bankAccount}</p>
               <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Reference:</strong> {depRequest.bankRef}</p>
               <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Amount:</strong> {depRequest.amount}</p>
-              <p className="text-md"><strong>Status:</strong> &nbsp;
-              <select
-                // value={status}
-                // onChange={handleStatusChange}
+              <p className="text-md"><strong>Status:</strong> &nbsp; 
+              <HandleStatusChangeButton id={depRequest.id} initialStatus={depRequest.status} /> 
+              </p>
+              {/* <select 
+                // value={depRequest.status}
                 className="p-1 border border-gray-300 rounded-sm"
                 >
-                {statusOptions.map(option => (
-                <option key={option} value={option}>
-                {option.charAt(0).toUpperCase() + option.slice(1)}
-                </option>
-                ))}
-              </select></p>
+                    {statusOptions.map((status) => (
+                      <option key={status} value={status}>
+                      {status}
+                    </option>
+                            ))}
+              </select></p> */}
 
               <div className=" mt-5 flex ">
                 <strong>Receipt:</strong>
@@ -267,7 +289,7 @@ export default async function DepositRequest() {
             </PaginationItem>
           </PaginationContent>
         </Pagination>
-      </div>
+      </div> 
     </main>
   );
 }
