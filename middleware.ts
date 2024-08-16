@@ -36,6 +36,11 @@ export default auth(async (req) => {
     return;
   }
 
+    // Skip API routes
+  // if (nextUrl.pathname.startsWith('/api/')) {
+  //   return NextResponse.next();
+  // }
+
   
   if (isAuthRoute) {
     if (isLoggedIn && role !== UserRole.USER) {

@@ -1,5 +1,3 @@
-// 'use client'
-import Image from "next/image";
 import Link from "next/link";
 import { ExpandIcon, File, FileIcon, ImageIcon, ListFilter, Mail, MoreHorizontal, Phone, PlusCircle } from "lucide-react";
 
@@ -51,23 +49,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 
-import HandleStatusChangeButton from "../../_components/HandleStatusChangeButton";
+
+import HandleStatusChange from "../../_components/handleStatusChange";
+import AlertDialogConfirmation from "../../_components/alertDialogConfirmation";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PrismaClient } from "@prisma/client";
-// import { error } from "console";
 
 
 export default async function DepositRequest() {
@@ -201,60 +189,14 @@ export default async function DepositRequest() {
               <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Account:</strong> {depRequest.bankAccount}</p>
               <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Bank Reference:</strong> {depRequest.bankRef}</p>
               <p className="text-md border border-gray-300 rounded-sm p-1"><strong>Amount:</strong> {depRequest.amount}</p>
-              <p className="text-md"><strong>Status:</strong> &nbsp; 
-              <HandleStatusChangeButton id={depRequest.id} initialStatus={depRequest.status} /> 
-              </p>
-              {/* <select 
-                // value={depRequest.status}
-                className="p-1 border border-gray-300 rounded-sm"
-                >
-                    {statusOptions.map((status) => (
-                      <option key={status} value={status}>
-                      {status}
-                    </option>
-                            ))}
-              </select></p> */}
-
-              <div className=" mt-5 flex ">
-                <strong>Receipt:</strong>
-                <div className="p-3">
-                  <Image
-                  src={depRequest.receiptImage}
-                  alt="Receipt"
-                  width={500}
-                  height={300}
-                  className="rounded-sm shadow-sm"
-                  />
-                </div>
-              </div>
+              <HandleStatusChange depRequest={depRequest} /> 
               </div>
 
 
-        <AlertDialog>
-      <AlertDialogTrigger>
-  <div className="mt-2 flex justify-end gap-4">
-          <Button  variant="destructive">
-            Delete
-          </Button>
-          <Button variant="default">
-            Save
-          </Button>
-        </div>
-  </AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Are You Sure?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This will permanently delete your account
-        and remove your data from our servers.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel>Cancel</AlertDialogCancel>
-      <AlertDialogAction>Continue</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
+
+            <AlertDialogConfirmation depRequest={depRequest} />
+
+        
 
       </DialogContent>
     </Dialog>
