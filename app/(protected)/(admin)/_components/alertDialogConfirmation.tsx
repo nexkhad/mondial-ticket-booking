@@ -16,7 +16,8 @@ import { Button } from "@/components/ui/button";
 // import { useRouter } from "next/router";
 import { deleteRecord } from "@/lib/deletePaymentRcrd";
 
-const AlertDialogConfirmation = ({ depRequest }: { depRequest: any }) => {
+
+const AlertDialogConfirmation = ({ depRequest ,closeModal }: { depRequest: any ,closeModal: ()=> void} ) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [actionType, setActionType] = useState<string | null>(null);
 
@@ -75,7 +76,7 @@ const AlertDialogConfirmation = ({ depRequest }: { depRequest: any }) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCancel}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirm}>Confirm</AlertDialogAction>
+            <AlertDialogAction onClick={()=>{handleConfirm(); closeModal();}}>Confirm</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
