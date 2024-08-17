@@ -1,7 +1,7 @@
 export async function deleteRecord(id: string) {
   console.log(id);
   
-  const response = await fetch(`/api/deletePaymentReq/${id}`, {
+  const response = await fetch(`/api/admin/paymentRequest/delete/${id}`, {
     method: 'DELETE',
   });
   

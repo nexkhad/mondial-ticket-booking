@@ -14,6 +14,10 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
+                hostname: 'www.monumentalmarketing.co.uk'
+            },
+            {
+                protocol: 'https',
                 hostname: 'images.pexels.com'
             },
             {

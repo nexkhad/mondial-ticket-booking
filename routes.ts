@@ -28,6 +28,8 @@ export const adminRoutes: string[] = [
     "/admin/fligts",
     "/admin/users",
     "/admin/tickets",
+    "/api/admin/paymentRequest/delete"
+
 ]
 
 /**

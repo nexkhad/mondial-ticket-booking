@@ -11,7 +11,6 @@ import {
 } from "./routes";
 import { getCurrentRole } from "./lib/auth";
 import { UserRole } from "@prisma/client";
-import next from "next";
 
 const { auth } = NextAuth(authConfig);
 
@@ -27,14 +26,20 @@ export default auth(async (req) => {
   const isAdmin= role === UserRole.ADMIN
   const isUser= role === UserRole.USER
 
+  if (nextUrl.pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
 
+  
   if(nextUrl.pathname === '/admin'){
     return NextResponse.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl))
   }
+
+  console.log(nextUrl.pathname);
+  console.log(isAdminRoute, " isAdminRoute");
+  console.log(isPublicRoute, " isPublicRoute");
+  console.log(isUserRoute, " isUserRoute");
   
-  if (isApiAuthRoute) {
-    return;
-  }
 
     // Skip API routes
   // if (nextUrl.pathname.startsWith('/api/')) {
@@ -43,6 +48,7 @@ export default auth(async (req) => {
 
   
   if (isAuthRoute) {
+    
     if (isLoggedIn && role !== UserRole.USER) {
       return NextResponse.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl));
     }
@@ -52,7 +58,9 @@ export default auth(async (req) => {
     return;
   }
 
+  console.log(role, " role");
   if (isUserRoute && isAdmin) {
+
     console.log('redirecting to admin from user to : '+ new URL(DEFAULT_ADMIN_REDIRECT, nextUrl))
     console.log(nextUrl.pathname);
     return NextResponse.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl));
@@ -60,6 +68,8 @@ export default auth(async (req) => {
 
 
   if(isAdminRoute && isUser){
+    console.log(role, " role");
+
     return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
   }
 
@@ -74,6 +84,3 @@ export default auth(async (req) => {
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
-
-
