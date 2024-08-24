@@ -37,9 +37,9 @@ export default auth(async (req) => {
   }
 
     // Skip API routes
-  // if (nextUrl.pathname.startsWith('/api/')) {
-  //   return NextResponse.next();
-  // }
+  if (nextUrl.pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
 
   
   if (isAuthRoute) {

@@ -23,6 +23,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'www.mondial.ae'
+            },
+            {
+                protocol:"https",
+                hostname:'www.monumentalmarketing.co.uk'
             }
         ]
     },

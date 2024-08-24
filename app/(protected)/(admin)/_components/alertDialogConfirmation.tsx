@@ -15,8 +15,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 // import { useRouter } from "next/router";
 import { deleteRecord } from "@/lib/deletePaymentRcrd";
+import { getRecord } from "@/lib/getRecords";
 
-const AlertDialogConfirmation = ({ depRequest }: { depRequest: any }) => {
+const AlertDialogConfirmation = ({ depRequest ,setOpen }: { depRequest: any ,setOpen: ()=>void }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [actionType, setActionType] = useState<string | null>(null);
 
@@ -35,13 +36,16 @@ const AlertDialogConfirmation = ({ depRequest }: { depRequest: any }) => {
   const handleConfirm = async () => {
     
     try {
+      setOpen(false);
       if (actionType === 'delete') {
 
-        await deleteRecord(depRequest.id);
-        
-
+       const data = await deleteRecord(depRequest.id);
+       
+         await getRecord()
+       
       }
       setIsDialogOpen(false);
+      window.location.reload()
     //   router.reload(); // Refreshes the page
     } catch (error) {
       console.error('An error occurred:', error);

@@ -34,13 +34,13 @@ function HandleStatusChange({ depRequest }) {
 
      <div className=" mt-5 flex ">
           <strong>Receipt:</strong>
-          <div className="p-3">
+          <div className="p-3 ">
             <Image
               src={depRequest.receiptImage}
               alt="Receipt"
               width={500}
               height={300}
-              className="rounded-sm shadow-sm"
+              className="rounded-sm shadow-sm w-[500px] h-[300px] "
             />
           </div>
       </div>
