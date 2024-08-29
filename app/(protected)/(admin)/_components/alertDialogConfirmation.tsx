@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { deleteRecord } from "@/lib/deletePaymentRcrd";
 import { getRecord } from "@/lib/getRecords";
 
-const AlertDialogConfirmation = ({ depRequest ,setOpen }: { depRequest: any ,setOpen: ()=>void }) => {
+
+const AlertDialogConfirmation = ({ depRequest ,setOpen,setDepositRequests }: { depRequest: any , setOpen: React.Dispatch<React.SetStateAction<boolean>>,setDepositRequests:React.Dispatch<React.SetStateAction<any[]>> }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [actionType, setActionType] = useState<string | null>(null);
 
@@ -41,11 +42,11 @@ const AlertDialogConfirmation = ({ depRequest ,setOpen }: { depRequest: any ,set
 
        const data = await deleteRecord(depRequest.id);
        
-         await getRecord()
-       
+       const dep = await getRecord()
+       setDepositRequests(dep)
       }
       setIsDialogOpen(false);
-      window.location.reload()
+
     //   router.reload(); // Refreshes the page
     } catch (error) {
       console.error('An error occurred:', error);

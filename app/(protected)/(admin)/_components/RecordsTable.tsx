@@ -53,19 +53,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getRecord } from "@/lib/getRecords";
 
 const RecordsTable = () => {
-const [depositRequests,setdepositRequests]=useState()
+const [depositRequests,setdepositRequests]=useState<any[]>([]);
+
+const fetchData=async()=>{
+  const data=await getRecord()
+  if (data){
+      setdepositRequests(data)
+  }
+}
+
  useEffect(()=>{
-    const fetchData=async()=>{
-        const data=await getRecord()
-        if (data){
-            setdepositRequests(data)
-        }
-    }
    fetchData()
  },[])
-  useEffect(()=>{
-
-  },[depositRequests])
+ 
     return (
 
    <>
@@ -147,7 +147,7 @@ const [depositRequests,setdepositRequests]=useState()
             <TableCell>{depRequest.amount}</TableCell>
             <TableCell>{depRequest.status}</TableCell>
             <TableCell className="text-center">
-              <MainModal depRequest={depRequest}/>
+              <MainModal depRequest={depRequest} setDepositRequests={setdepositRequests} />
             </TableCell>
           </TableRow>
         ))}

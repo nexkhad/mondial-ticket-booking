@@ -11,8 +11,8 @@ import {
 import { ExpandIcon, File, FileIcon, ImageIcon, ListFilter, Mail, MoreHorizontal, Phone, PlusCircle } from "lucide-react";
 import HandleStatusChange from './handleStatusChange';
 import AlertDialogConfirmation from './alertDialogConfirmation';
-const mainModal = ({depRequest}:{depRequest:any}) => {
-    const [isOpen,setOpen]=useState(false);
+const mainModal = ({depRequest, setDepositRequests}:{ depRequest: any; setDepositRequests: React.Dispatch<React.SetStateAction<any[]>> }) => {
+    const [isOpen,setOpen]=useState<boolean>(false);
   return (
     <>
   <Dialog >
@@ -37,7 +37,7 @@ const mainModal = ({depRequest}:{depRequest:any}) => {
 
 
 
-            <AlertDialogConfirmation depRequest={depRequest} setOpen={setOpen}  />
+            <AlertDialogConfirmation depRequest={depRequest} setOpen={setOpen} setDepositRequests={setDepositRequests}  />
         
 
       </DialogContent>)}
